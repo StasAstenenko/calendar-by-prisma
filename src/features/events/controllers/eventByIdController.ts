@@ -5,10 +5,9 @@ import { updateEvent } from '../services/updateEvent';
 import { deleteEvent } from '../services/deleteEvent';
 import { CreateEventInput } from '../types/eventTypes';
 
-export const GET = async (
-  _: Request,
-  { params }: { params: { id: string } }
-) => {
+type Params = { params: { id: string } };
+
+export async function GET(_: Request, { params }: Params) {
   const session = await getAuthSession();
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -20,12 +19,9 @@ export const GET = async (
   }
 
   return NextResponse.json(event);
-};
+}
 
-export const PUT = async (
-  req: Request,
-  { params }: { params: { id: string } }
-) => {
+export async function PUT(req: Request, { params }: Params) {
   const session = await getAuthSession();
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -43,12 +39,9 @@ export const PUT = async (
   }
 
   return NextResponse.json({ success: true });
-};
+}
 
-export const DELETE = async (
-  _: Request,
-  { params }: { params: { id: string } }
-) => {
+export async function DELETE(_: Request, { params }: Params) {
   const session = await getAuthSession();
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -60,4 +53,4 @@ export const DELETE = async (
   }
 
   return NextResponse.json({ success: true });
-};
+}
