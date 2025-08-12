@@ -3,6 +3,7 @@ import { getAuthSession } from '@/lib/auth/auth';
 import { getEvents } from '../services/getEvents';
 import { createEvent } from '../services/createEvent';
 import { CreateEventInput } from '../types/eventTypes';
+import { Importance } from '@prisma/client';
 
 export const GET = async (req: Request) => {
   const session = await getAuthSession();
@@ -12,7 +13,12 @@ export const GET = async (req: Request) => {
 
   const { searchParams } = new URL(req.url);
   const q = searchParams.get('q') ?? undefined;
-  const importance = searchParams.get('importance') ?? undefined;
+
+  const importanceParam = searchParams.get('importance') ?? undefined;
+  const importance =
+    importanceParam && importanceParam in Importance
+      ? (importanceParam as Importance)
+      : undefined;
 
   const events = await getEvents({ userId: session.user.id, q, importance });
   return NextResponse.json(events);

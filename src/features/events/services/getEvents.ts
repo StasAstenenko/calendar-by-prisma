@@ -1,9 +1,10 @@
 import prisma from '@/lib/prisma/prisma';
+import { Importance } from '@prisma/client';
 
 interface GetEvents {
   userId: string;
   q?: string;
-  importance?: string;
+  importance?: Importance;
 }
 
 export const getEvents = async ({ userId, importance, q }: GetEvents) => {
